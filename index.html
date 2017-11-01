@@ -1,0 +1,216 @@
+<!--#include file="/partials/header_start.hbs" -->
+<title>Mongoose OS ESP32-DevKitC for AWS IoT</title>
+<style type="text/css">
+  body { background: #eee !important; }
+  a[name] {
+    position: absolute; top: 0.5em; right: 0; font-size: 15px !important;
+    color: #ccc !important; z-index: 999; outline: none;
+    padding-top: 100px; margin-top: -100px;
+  }
+  * { outline: none; }
+  h2 { position: relative; }
+  pre { margin: 0.5em 0 !important; }
+</style>
+<!--#include file="/partials/header_end.hbs" -->
+
+<body>
+  <div>
+    <!--#include file="/partials/menu.hbs" -->
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2><span style="margin-right: 1em;">Mongoose OS ESP32-PICO-D4</span>
+        <small style="white-space: nowrap;">quick Start Guide for AWS IoT</small></h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Description
+            <a name="descr" href="#descr" class="hash"><i class="fa fa-link"></i></a>
+          </h2>
+          <p>
+            Mongoose OS PICO-D kit is designed by the <a href="http://espressif.com">Espressif Systems</a>
+            specifically for the <a href="http://espressif.com/en/media_overview/news/aws-pop-loft-dedicated-espressif">AWS Pop-up Loft Dedicated to Espressif</a>.
+            It provides a quick way to start IoT development on ESP32.
+            <br>This quick start guide and reference materials include the following:
+          </p>
+          <ul>
+            <li><a href="#cloud">Cloud Side Setup</a></li>
+            <li><a href="#dev">Device Setup</a></li>
+            <li><a href="#tut1">Tutorial 1: IoT button</a></li>
+            <li><a href="#tut2">Tutorial 2: Sending sensor readings</a></li>
+            <li><a href="#tut3">Tutorial 3: Controlling LED strip</a></li>
+            <li><a href="#tut4">Extension challenges</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable">
+            <input type="checkbox" id="i0">
+            <label for="i0"><img src="kit0.png"></label>
+          </div>
+          <!--
+          <a href="https://www.amazon.com/Grid-Connect-GC-ESP32-AWS-SK-ConnectSense-Mongoose/dp/B07562GY9G" class="btn btn-success btn-block" style="color: white;">BUY IOT STARTER KIT NOW</a>
+          -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Cloud side setup
+            <a name="cloud" href="#cloud"><i class="fa fa-link"></i></a>
+          </h2>
+          <ol>
+            <li> Install <a href="https://aws.amazon.com/cli/">AWS CLI command line utility</a></li>
+            <li> Follow <a href="http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html">AWS CLI configuration guide</a> to setup your AWS credentials</li>
+            <li> Make sure that <code>aws iot list-things</code> command works without errors</li>
+          </ol>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="kit1.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Device setup
+            <a name="dev" href="#dev" class="hash"><i class="fa fa-link"></i></a>
+          </h2>
+          <ol>
+            <li> Connect the device to your computer with a micro-USB cable</li>
+            <li> Follow <a href="/software.html" target=“_blank”>installation instructions</a> to install <code>mos</code> tool
+              on your computer</li>
+            <li> Start <code>mos</code> tool. A Web UI will appear, with the connection dialog</li>
+            <li> Select "Serial Port" click Connect</li>
+            <li> In the firmware dropdown, type <code>aws-pico</code>, click Flash.</li>
+            <li> Enter your WiFi credentials, click "Save"</li>
+            <li> Click on "START PROTOTYPING". That should open the 
+              <code>init.js</code> file on your device</li>
+            </li>
+            <li> Click on "Device Config" tab in mos Web UI. Fill in AWS parameters: select your region and AWS policy (use <code>mos-default</code> if in doubt) and click "Save".</li>
+          </ol>
+          <b>Troubleshooting:</b> post on
+            <a href="https://mongoose-os.com">Mongoose OS forum</a> or
+            talk on <a href="https://gitter.im/cesanta/mongoose-os">Mongoose OS chat</a>.
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i4"><label for="i4"><img src="/docs/media/mos1.gif"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Tutorial 1: IoT button
+            <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
+          </h2>
+          Please follow instructions at 
+            <a href="https://github.com/mongoose-os-apps/aws-iot-button"> IoT button App - AWS IoT, Lambda, SNS</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Tutorial 2: sending sensor readings
+            <a name="tut2" href="#tut2"><i class="fa fa-link"></i></a>
+          </h2>
+          Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
+              <pre><code class="language-javascript">load('api_config.js');
+// Rest of the code...</code></pre>
+        
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Tutorial 3: controlling LED strip
+            <a name="tut3" href="#tut3"><i class="fa fa-link"></i></a>
+          </h2>
+          Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
+              <pre><code class="language-javascript">load('api_config.js');
+// Rest of the code...</code></pre>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Extension challenges
+            <a name="tut4" href="#tut4"><i class="fa fa-link"></i></a>
+          </h2>
+          <ol>
+            <li>Challenge 1</li>
+            <li>Challenge 2</li>
+            <li>Challenge 3</li>
+          </ol>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--#include file="/partials/footer.hbs" -->
+</body>
+
+</html>
