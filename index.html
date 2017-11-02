@@ -1,5 +1,7 @@
 <!--#include file="/partials/header_start.hbs" -->
 <title>Mongoose OS ESP32-DevKitC for AWS IoT</title>
+<script src="/js/prism.js"></script>
+<link href="/css/prism.css" rel="stylesheet">
 <style type="text/css">
   body { background: #eee !important; }
   a[name] {
@@ -43,10 +45,12 @@
           <ul>
             <li><a href="#cloud">Cloud Side Setup</a></li>
             <li><a href="#dev">Device Setup</a></li>
-            <li><a href="#tut1">Tutorial 1: IoT button</a></li>
-            <li><a href="#tut2">Tutorial 2: Sending sensor readings</a></li>
-            <li><a href="#tut3">Tutorial 3: Controlling LED strip</a></li>
-            <li><a href="#tut4">Extension challenges</a></li>
+            <li><a href="#tut1">Tutorial 1: Provision to AWS IoT</a></li>
+            <li><a href="#tut2">Tutorial 2: IoT button - send messages on button click</a></li>
+            <li><a href="#tut3">Tutorial 3: Send light sensor data</a></li>
+            <li><a href="#tut4">Tutorial 4: Send temperature sensor data</a></li>
+            <li><a href="#tut5">Tutorial 5: Control LED strip remotely</a></li>
+            <li><a href="#tuta">Advanced</a></li>
           </ul>
         </div>
       </div>
@@ -128,10 +132,10 @@
     <div class="row equal_height">
       <div class="col-md-8">
         <div class="fw">
-          <h2 class="page-header">Tutorial 1: Provision with AWS IoT
+          <h2 class="page-header">Tutorial 1: Provision to AWS IoT
             <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
           </h2>
-            In this tutorial we are going to provision the board with
+            In this tutorial we are going to provision the board to
             AWS IoT.<br>
             1. Open Mongoose OS Web UI, click on the "Device Config" tab<br>
             2. In the "Provision device on AWS IoT" section, choose your
@@ -161,7 +165,7 @@
       <div class="col-md-8">
         <div class="fw">
           <h2 class="page-header">Tutorial 2: IoT button
-            <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
+            <a name="tut2" href="#tut2"><i class="fa fa-link"></i></a>
           </h2>
             In this tutorial we are going to setup a button
             handler which publishes a message to AWS IoT MQTT service
@@ -181,8 +185,8 @@ GPIO.set_button_handler(pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, function() {
   let ok = MQTT.pub(topic, message, 1);
   print('Published:', ok);
 }, null);</code></pre>
-            3. Open AWS IoT console, click on "Test" link on the left hand side.
-            4. Subscribe to <code>mos/topic1</code> topic.
+            3. Open AWS IoT console, click on "Test" link on the left hand side.<br>
+            4. Subscribe to <code>mos/topic1</code> topic.<br>
             5. Press BTN1 button couple of times, see messages appear on the
             AWS IoT console.
         </div>
@@ -200,18 +204,33 @@ GPIO.set_button_handler(pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, function() {
     <div class="row equal_height">
       <div class="col-md-8">
         <div class="fw">
-          <h2 class="page-header">Tutorial 2: sending sensor readings
-            <a name="tut2" href="#tut2"><i class="fa fa-link"></i></a>
+          <h2 class="page-header">Tutorial 3: send light sensor data
+            <a name="tut3" href="#tut2"><i class="fa fa-link"></i></a>
           </h2>
-          Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
-              <pre><code class="language-javascript">load('api_config.js');
-// Rest of the code...</code></pre>
-        
+          In this tutorial, we will read measurements from the light
+          sensor BH1730 and send those to the AWS IoT service every
+          second.<br>
+          1. Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
+<pre><code class="language-javascript">load('api_mqtt.js');
+load('api_timer.js');
+load('api_bh1730.js');
+
+let topic = 'mos/topic1';
+let bh1730 = BH1730.create(0x29);
+
+Timer.set(1000, 1, function() {
+  let message = JSON.stringify({ lux: bh1730.read_lux() });
+  let ok = MQTT.pub(topic, message, 1);
+  print('Published:', ok);
+}, null);
+</code></pre>
+        2. Open AWS IoT console, see JSON messages with light sensor
+        measurements appear.
         </div>
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i5"><label for="i5"><img src="logo_blue_MOS.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i6"><label for="i6"><img src="kit6.png"></label></div>
         </div>
       </div>
     </div>
@@ -221,40 +240,42 @@ GPIO.set_button_handler(pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, function() {
     <div class="row equal_height">
       <div class="col-md-8">
         <div class="fw">
-          <h2 class="page-header">Tutorial 3: controlling LED strip
-            <a name="tut3" href="#tut3"><i class="fa fa-link"></i></a>
-          </h2>
-          Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
-              <pre><code class="language-javascript">load('api_config.js');
-// Rest of the code...</code></pre>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i9"><label for="i9"><img src="logo_blue_MOS.png"></label></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="container">
-    <div class="row equal_height">
-      <div class="col-md-8">
-        <div class="fw">
-          <h2 class="page-header">Extension challenges
+          <h2 class="page-header">Tutorial 4: send temperature sensor data
             <a name="tut4" href="#tut4"><i class="fa fa-link"></i></a>
           </h2>
-          <ol>
-            <li>Challenge 1</li>
-            <li>Challenge 2</li>
-            <li>Challenge 3</li>
-          </ol>
+          In this tutorial, we expand the previous tutorial with
+          data from BME280 sensor, which reports temperature, humidity
+          and pressure.<br>
+          1. Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
+          Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
+<pre><code class="language-javascript">load('api_mqtt.js');
+load('api_timer.js');
+load('api_bh1730.js');
+load('api_arduino_bme280.js');
+
+let topic = 'mos/topic1';
+let bh1730 = BH1730.create(0x29);
+let bme = Adafruit_BME280.create();
+bme.begin(0x76);
+
+Timer.set(1000, 1, function() {
+  let message = JSON.stringify({
+    lux: bh1730.read_lux(),
+    temperature: bme.readTemperature(),
+    humidity:    bme.readHumidity(),
+    pressure:    bme.readPressure(),
+  });
+  let ok = MQTT.pub(topic, message, 1);
+  print('Published:', ok, message);
+}, null);
+</code></pre>
+        2. Open AWS IoT console, see JSON messages with
+        sensor measurements appear.
         </div>
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i8"><label for="i8"><img src="logo_blue_MOS.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i7"><label for="i7"><img src="kit7.png"></label></div>
         </div>
       </div>
     </div>
@@ -265,8 +286,52 @@ GPIO.set_button_handler(pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, function() {
     <div class="row equal_height">
       <div class="col-md-8">
         <div class="fw">
-          <h2 class="page-header">Tutorial 1: IoT button
-            <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
+          <h2 class="page-header">Tutorial 5: Control LED strip remotely
+            <a name="tut5" href="#tut5"><i class="fa fa-link"></i></a>
+          </h2>
+            In this tutorial, we will control LED remotely. A device
+            subscribes to an MQTT topic <code>mos/topic1</code>,
+            waiting for a control commands. We are going to send those
+            commands via the AWS IoT MQTT console.<br>
+          1. Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
+<pre><code class="language-javascript">load('api_mqtt.js');
+load('api_neopixel.js');
+
+let topic = 'mos/topic1';
+let strip = NeoPixel.create(23, 5, NeoPixel.GRB);
+
+MQTT.sub(topic, function(conn, topic, msg) {
+  print('Topic:', topic, 'message:', msg);
+  let obj = JSON.parse(msg);
+  strip.setPixel(obj.pixel, obj.r, obj.g, obj.b);
+  strip.show();
+}, null);
+</code></pre>
+          2. Open AWS IoT console, and publish this message to topic
+          <code>mos/topic1</code>:
+<pre><code class="language-json">{
+  "pixel": 0, "r": 40, "g": 120, "b": 220
+}
+</code></pre>
+          3. See how LED lights up. Play with different values for pixel,
+          red, green, blue.
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i8"><label for="i8"><img src="kit8.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Advanced: IoT button, AWS Lambda, SNS
+            <a name="tuta" href="#tuta"><i class="fa fa-link"></i></a>
           </h2>
             Please follow instructions at 
             <a href="https://github.com/mongoose-os-apps/aws-iot-button"> IoT button App - AWS IoT, Lambda, SNS</a>
