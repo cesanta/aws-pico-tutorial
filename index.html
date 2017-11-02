@@ -37,7 +37,7 @@
             <a name="descr" href="#descr" class="hash"><i class="fa fa-link"></i></a>
           </h2>
           <p>
-            Mongoose OS PICO-D kit is designed by the <a href="http://espressif.com">Espressif Systems</a>
+            Mongoose OS ESP32-PICO-KIT breakout was designed by <a href="http://espressif.com">Espressif Systems</a>
             specifically for the <a href="http://espressif.com/en/media_overview/news/aws-pop-loft-dedicated-espressif">AWS Pop-up Loft Dedicated to Espressif</a>.
             It provides a quick way to start IoT development on ESP32.
             <br>This quick start guide and reference materials include the following:
@@ -135,7 +135,7 @@
           <h2 class="page-header">Tutorial 1: Provision to AWS IoT
             <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
           </h2>
-            In this tutorial we are going to provision the board to
+            In this tutorial we are going to provision the board and connect it to
             AWS IoT.<br>
             1. Open Mongoose OS Web UI, click on the "Device Config" tab<br>
             2. In the "Provision device on AWS IoT" section, choose your
@@ -167,7 +167,7 @@
           <h2 class="page-header">Tutorial 2: IoT button
             <a name="tut2" href="#tut2"><i class="fa fa-link"></i></a>
           </h2>
-            In this tutorial we are going to setup a button
+            In this tutorial we are going to write a button
             handler which publishes a message to AWS IoT MQTT service
             on a button press.<br>
             1. In the Web UI, click on "Device Files" tab. Click
@@ -207,7 +207,7 @@ GPIO.set_button_handler(pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, function() {
           <h2 class="page-header">Tutorial 3: send light sensor data
             <a name="tut3" href="#tut2"><i class="fa fa-link"></i></a>
           </h2>
-          In this tutorial, we will read measurements from the light
+          In this tutorial, we will use a timer to read measurements from the light
           sensor BH1730 and send those to the AWS IoT service every
           second.<br>
           1. Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
@@ -243,8 +243,8 @@ Timer.set(1000, 1, function() {
           <h2 class="page-header">Tutorial 4: send temperature sensor data
             <a name="tut4" href="#tut4"><i class="fa fa-link"></i></a>
           </h2>
-          In this tutorial, we expand the previous tutorial with
-          data from BME280 sensor, which reports temperature, humidity
+          In this tutorial, we add a second sensor to our existing code.
+          The new sensor is the BME280 that reports temperature, humidity
           and pressure.<br>
           1. Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
           Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
@@ -289,9 +289,9 @@ Timer.set(1000, 1, function() {
           <h2 class="page-header">Tutorial 5: Control LED strip remotely
             <a name="tut5" href="#tut5"><i class="fa fa-link"></i></a>
           </h2>
-            In this tutorial, we will control LED remotely. A device
-            subscribes to an MQTT topic <code>mos/topic1</code>,
-            waiting for a control commands. We are going to send those
+            In this tutorial, we will light up RGB LEDs remotely via AWS IoT. The device
+            subscribes to an MQTT topic <code>mos/topic1</code> and
+            waits for MQTT messages with control commands. We are going to send those
             commands via the AWS IoT MQTT console.<br>
           1. Open <code>init.js</code>, copy/paste this code, click "Save + Reboot":
 <pre><code class="language-javascript">load('api_mqtt.js');
