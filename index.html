@@ -83,7 +83,7 @@
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="kit1.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i13"><label for="i13"><img src="kit1.png"></label></div>
         </div>
       </div>
     </div>
@@ -117,33 +117,84 @@
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i4"><label for="i4"><img src="/docs/media/mos1.gif"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i40"><label for="i40"><img src="/docs/media/mos1.gif"></label></div>
         </div>
       </div>
     </div>
   </div>
-
 
 
   <div class="container">
     <div class="row equal_height">
       <div class="col-md-8">
         <div class="fw">
-          <h2 class="page-header">Tutorial 1: IoT button
+          <h2 class="page-header">Tutorial 1: Provision with AWS IoT
             <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
           </h2>
-          Please follow instructions at 
-            <a href="https://github.com/mongoose-os-apps/aws-iot-button"> IoT button App - AWS IoT, Lambda, SNS</a>
+            In this tutorial we are going to provision the board with
+            AWS IoT.<br>
+            1. Open Mongoose OS Web UI, click on the "Device Config" tab<br>
+            2. In the "Provision device on AWS IoT" section, choose your
+            AWS region. Select "mos-default" policy.
+            Click "Provision with AWS IoT" button.<br>
+            3. In the Web UI, click on "Device Files" tab. Click
+            "Refresh File List" button. Click on <code>init.js</code> file
+            to open it.<br>
+            4. On successful connect, you should see in the device logs:
+<pre><code class="language-javascript">[Nov  1 17:05:30.298] mgos_mqtt_ev         MQTT CONNACK 0
+[Nov  1 17:05:30.305] do_subscribe         Subscribing to 'esp32_0013A8/rpc'
+[Nov  1 17:05:30.312] do_subscribe         Subscribing to 'esp32_0013A8/rpc/#'</code></pre>
         </div>
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i2"><label for="i2"><img src="kit2.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="kit3.png"></label></div>
         </div>
       </div>
     </div>
   </div>
 
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Tutorial 2: IoT button
+            <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
+          </h2>
+            In this tutorial we are going to setup a button
+            handler which publishes a message to AWS IoT MQTT service
+            on a button press.<br>
+            1. In the Web UI, click on "Device Files" tab. Click
+            "Refresh File List" button. Click on <code>init.js</code> file
+            to open it.<br>
+            2. Copy/paste this code, click "Save + Reboot":
+              <pre><code class="language-javascript">load('api_gpio.js');
+load('api_mqtt.js');
+
+let topic = 'mos/topic1';
+let pin = 36;
+
+GPIO.set_button_handler(pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, function() {
+  let message = JSON.stringify({ foo: 'bar' });
+  let ok = MQTT.pub(topic, message, 1);
+  print('Published:', ok);
+}, null);</code></pre>
+            3. Open AWS IoT console, click on "Test" link on the left hand side.
+            4. Subscribe to <code>mos/topic1</code> topic.
+            5. Press BTN1 button couple of times, see messages appear on the
+            AWS IoT console.
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i5"><label for="i5"><img src="kit5.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i4"><label for="i4"><img src="kit4.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <div class="row equal_height">
@@ -160,7 +211,7 @@
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i5"><label for="i5"><img src="logo_blue_MOS.png"></label></div>
         </div>
       </div>
     </div>
@@ -180,7 +231,7 @@
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i9"><label for="i9"><img src="logo_blue_MOS.png"></label></div>
         </div>
       </div>
     </div>
@@ -203,11 +254,32 @@
       </div>
       <div class="col-md-4">
         <div class="fw vcenter">
-          <div class="zoomable"><input type="checkbox" id="i3"><label for="i3"><img src="logo_blue_MOS.png"></label></div>
+          <div class="zoomable"><input type="checkbox" id="i8"><label for="i8"><img src="logo_blue_MOS.png"></label></div>
         </div>
       </div>
     </div>
   </div>
+
+
+  <div class="container">
+    <div class="row equal_height">
+      <div class="col-md-8">
+        <div class="fw">
+          <h2 class="page-header">Tutorial 1: IoT button
+            <a name="tut1" href="#tut1"><i class="fa fa-link"></i></a>
+          </h2>
+            Please follow instructions at 
+            <a href="https://github.com/mongoose-os-apps/aws-iot-button"> IoT button App - AWS IoT, Lambda, SNS</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fw vcenter">
+          <div class="zoomable"><input type="checkbox" id="i11"><label for="i11"><img src="logo_blue_MOS.png"></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
   <!--#include file="/partials/footer.hbs" -->
